@@ -59,6 +59,8 @@ export const getFeatureUrl = (feature: string) => {
     return "https://trpc.io/";
   } else if (feature === "tailwind") {
     return "https://tailwindcss.com/";
+  } else {
+    throw new Error(`Unknown feature: ${feature}`);
   }
 };
 

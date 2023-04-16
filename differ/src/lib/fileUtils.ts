@@ -61,7 +61,7 @@ export const getExistingDiffsMap = () => {
         ...acc,
         [`${currentVersion}..${upgradeVersion}${
           featuresString ? `-${featuresString}` : ""
-        }`]: true,
+        }`]: versionsAndFeatures,
       };
     },
     {}
@@ -90,8 +90,14 @@ export const getMissingDiffs = async (count: number) => {
   });
 
   const existingDiffsMap = getExistingDiffsMap();
-  const newDiffsMap: { [key: string]: boolean } = {};
 
+  const newDiffsMap: {
+    [key: string]: {
+      currentVersion: string;
+      upgradeVersion: string;
+      features: Features;
+    };
+  } = {};
   const features = ["nextAuth", "prisma", "trpc", "tailwind"];
 
   for (let i = 0; i < sortedT3Versions.length; i++) {
@@ -102,7 +108,11 @@ export const getMissingDiffs = async (count: number) => {
 
       const noFeaturesDiff = `${currentVersion}..${upgradeVersion}`;
       if (!existingDiffsMap[noFeaturesDiff]) {
-        newDiffsMap[noFeaturesDiff] = true;
+        newDiffsMap[noFeaturesDiff] = {
+          currentVersion,
+          upgradeVersion,
+          features: {},
+        };
       }
 
       for (const combination of combinations) {
@@ -121,15 +131,28 @@ export const getMissingDiffs = async (count: number) => {
           continue;
         }
 
-        newDiffsMap[key] = true;
+        console.log(`Missing diff: ${key}`);
+        newDiffsMap[key] = {
+          currentVersion,
+          upgradeVersion,
+          features,
+        };
       }
     }
   }
+  // console.log(
+  //   `Found ${
+  //     .join("\n")} existing diffs`
+  // );
 
+  console.log(existingDiffsMap);
   console.log(`Found ${Object.keys(newDiffsMap).length} new diffs`);
 
   const start = 0;
   const end = Math.min(count, Object.keys(newDiffsMap).length);
 
-  return Object.keys(newDiffsMap).slice(start, end);
+  return Object.entries(newDiffsMap)
+    .filter(([_, needed]) => needed)
+    .map((x) => x[1]);
+  // return Object.keys(newDiffsMap).slice(start, end);
 };

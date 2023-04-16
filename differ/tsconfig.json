@@ -1,28 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "checkJs": true,
-    "skipLibCheck": true,
+    "target": "ES2020",
+    // "useDefineForClassFields": true,
+    "module": "CommonJS",
+    "lib": ["dom"],
+    "outDir": "dist",
+    "moduleResolution": "Node",
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "sourceMap": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "noUncheckedIndexedAccess": true,
-    "baseUrl": ".",
-    
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "noEmit": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "baseUrl": "."
+    // "paths": {
+    //   "@/*": ["./src/*"]
+    // }
   },
-  "include": [
-    "src/**/*.ts",
-  ],
+  "include": ["src/**.ts"],
+  "files": ["./src/index.ts"],
   "exclude": ["node_modules"]
 }
