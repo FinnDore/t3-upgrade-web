@@ -70,7 +70,7 @@ export const getExistingDiffsMap = () => {
   return diffsMap;
 };
 
-export const getMissingDiffs = async (count: number) => {
+export const getMissingDiffs = async (_count: number) => {
   const t3Versions = await getT3Versions();
   const sortedT3Versions = t3Versions.sort((a, b) => {
     const aParts = a.split(".").map(Number);
@@ -145,11 +145,11 @@ export const getMissingDiffs = async (count: number) => {
   //     .join("\n")} existing diffs`
   // );
 
-  console.log(existingDiffsMap);
+  // console.log(existingDiffsMap);
   console.log(`Found ${Object.keys(newDiffsMap).length} new diffs`);
 
-  const start = 0;
-  const end = Math.min(count, Object.keys(newDiffsMap).length);
+  // const start = 0;
+  // const end = Math.min(count, Object.keys(newDiffsMap).length);
 
   return Object.entries(newDiffsMap)
     .filter(([_, needed]) => needed)

@@ -17,7 +17,7 @@ export const paramsSchema = z.object({
 
 type Params = z.infer<typeof paramsSchema>;
 
-export default async function generateDiff(params: Params) {
+export async function generateDiff(params: Params) {
   const { success } = paramsSchema.safeParse(params);
   if (!success) {
     return { error: "Invalid request body" };

@@ -36,13 +36,13 @@ const getExistingDiffsMap = () => {
         const featuresString = (0, utils_1.getFeaturesString)(features);
         return {
             ...acc,
-            [`${currentVersion}..${upgradeVersion}${featuresString ? `-${featuresString}` : ""}`]: true,
+            [`${currentVersion}..${upgradeVersion}${featuresString ? `-${featuresString}` : ""}`]: versionsAndFeatures,
         };
     }, {});
     return diffsMap;
 };
 exports.getExistingDiffsMap = getExistingDiffsMap;
-const getMissingDiffs = async (count) => {
+const getMissingDiffs = async (_count) => {
     const t3Versions = await (0, utils_1.getT3Versions)();
     const sortedT3Versions = t3Versions.sort((a, b) => {
         const aParts = a.split(".").map(Number);
@@ -69,7 +69,11 @@ const getMissingDiffs = async (count) => {
             const combinations = (0, utils_1.arrangements)(features);
             const noFeaturesDiff = `${currentVersion}..${upgradeVersion}`;
             if (!existingDiffsMap[noFeaturesDiff]) {
-                newDiffsMap[noFeaturesDiff] = true;
+                newDiffsMap[noFeaturesDiff] = {
+                    currentVersion,
+                    upgradeVersion,
+                    features: {},
+                };
             }
             for (const combination of combinations) {
                 const features = {
@@ -83,19 +87,26 @@ const getMissingDiffs = async (count) => {
                     continue;
                 }
                 console.log(`Missing diff: ${key}`);
-                newDiffsMap[key] = true;
+                newDiffsMap[key] = {
+                    currentVersion,
+                    upgradeVersion,
+                    features,
+                };
             }
         }
     }
-    console.log(`Found ${Object.entries(newDiffsMap)
-        .filter(([_, needed]) => needed)
-        .map((x) => x[0])
-        .join("\n")} existing diffs`);
+    // console.log(
+    //   `Found ${
+    //     .join("\n")} existing diffs`
+    // );
     console.log(existingDiffsMap);
     console.log(`Found ${Object.keys(newDiffsMap).length} new diffs`);
-    const start = 0;
-    const end = Math.min(count, Object.keys(newDiffsMap).length);
-    return Object.keys(newDiffsMap).slice(start, end);
+    // const start = 0;
+    // const end = Math.min(count, Object.keys(newDiffsMap).length);
+    return Object.entries(newDiffsMap)
+        .filter(([_, needed]) => needed)
+        .map((x) => x[1]);
+    // return Object.keys(newDiffsMap).slice(start, end);
 };
 exports.getMissingDiffs = getMissingDiffs;
 //# sourceMappingURL=fileUtils.js.map
