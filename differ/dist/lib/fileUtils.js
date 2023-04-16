@@ -99,7 +99,7 @@ const getMissingDiffs = async (_count) => {
     //   `Found ${
     //     .join("\n")} existing diffs`
     // );
-    console.log(existingDiffsMap);
+    // console.log(existingDiffsMap);
     console.log(`Found ${Object.keys(newDiffsMap).length} new diffs`);
     // const start = 0;
     // const end = Math.min(count, Object.keys(newDiffsMap).length);
